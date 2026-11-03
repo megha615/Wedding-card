@@ -86,8 +86,9 @@
 </head>
 <body class="bg-royalDark text-gray-800 min-h-screen opening-in-progress">
 
+    <!-- Updated with your custom audio file name -->
     <audio id="bgMusic" loop preload="auto">
-        <source "en-jeevan-koshalworldcom_SQRJ0BPH.mp3" type="audio/mpeg">
+        <source src="En-jeevan-koshalworldcom_SQRJ0BPH.mp3" type="audio/mpeg">
     </audio>
 
     <div id="musicControl" class="fixed bottom-6 right-6 z-50 hidden">
@@ -111,8 +112,7 @@
             </div>
              <p class="font-cinzel text-royalCream text-xs tracking-widest mt-5 bg-royalDark/80 px-5 py-2 rounded-full border border-royalGold/30 animate-bounce">Touch seal to enter</p>
         </div>
-    </div>
-        <!-- MAIN INVITATION CONTAINER -->
+    </div>    <!-- MAIN INVITATION CONTAINER -->
     <div id="mainInvitation" class="max-w-md mx-auto bg-royalCream text-gray-800 shadow-2xl relative min-h-screen">
         
         <!-- Top Ornamental Header -->
@@ -131,7 +131,7 @@
                 <i class="fa-solid fa-hands-praying text-3xl"></i>
             </div>
             <p class="font-sans text-sm leading-relaxed text-gray-800 mb-8 max-w-sm mx-auto">
-                With the blessings of our beloved families, we joyfully invite you to celebrate the union of our lives. Your presence will add immense joy to our auspicious day.
+                With the blessings of Almighty and our beloved families, we joyfully invite you to celebrate the union of our lives. Your presence will add immense joy to our auspicious day.
             </p>
             <div class="font-script text-4xl text-royalOlive tracking-wide">Our Forever Begins</div>
         </div>
@@ -142,7 +142,6 @@
             <p class="text-sm text-gray-700 mb-8 max-w-xs mx-auto">Gently swipe or click the heart below to reveal our special dates.</p>
             
             <div class="relative w-80 h-52 mx-auto rounded-2xl overflow-hidden shadow-lg gold-border bg-royalOlive flex items-center justify-center">
-                <!-- Revealed Content underneath -->
                 <div class="absolute inset-0 flex flex-col items-center justify-center p-5 bg-royalCream text-royalOlive z-0">
                     <i class="fa-solid fa-calendar-heart text-royalGold text-4xl mb-3"></i>
                     <h4 class="font-cinzel font-bold text-lg tracking-wide">RECEPTION</h4>
@@ -150,7 +149,6 @@
                     <p class="text-sm text-gray-700 mt-2">7:00 PM Onwards</p>
                     <p class="text-xs text-gray-600 mt-1">Muhurtha: 22 Nov 2026</p>
                 </div>
-                <!-- Scratch Canvas Layer -->
                 <canvas id="scratchCanvas" width="320" height="208" class="absolute inset-0 z-10 cursor-pointer"></canvas>
             </div>
             <button onclick="revealInstantly()" class="mt-6 text-sm font-cinzel text-royalOlive underline tracking-wider hover:text-[#B8A64E] transition">Can't scratch? Click here to reveal</button>
@@ -229,7 +227,7 @@
         let musicPlaying = false;
         let isFirstInteraction = true;
         const bgMusic = document.getElementById('bgMusic');
-        bgMusic.volume = 0.6;
+        bgMusic.volume = 0.8;
 
         function handleFirstInteraction() {
             if (isFirstInteraction) {
@@ -239,7 +237,7 @@
                     musicPlaying = true;
                     document.getElementById('musicIcon').classList.add('playing');
                 }).catch(error => {
-                    console.warn("Autoplay restricted:", error);
+                    console.warn("Autoplay restricted by browser:", error);
                     musicPlaying = false;
                     document.getElementById('musicIcon').classList.remove('playing');
                     document.getElementById('musicIcon').classList.add('fa-play');
@@ -275,7 +273,7 @@
                     musicPlaying = true;
                     document.getElementById('musicIcon').classList.remove('fa-play');
                     document.getElementById('musicIcon').classList.add('playing', 'fa-pause');
-                }).catch(err => console.error(err));
+                }).catch(err => console.error("Playback error:", err));
             }
         }
 
@@ -392,3 +390,4 @@
     </script>
 </body>
 </html>
+    
