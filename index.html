@@ -87,9 +87,12 @@
 <body class="bg-royalDark text-gray-800 min-h-screen opening-in-progress">
 
     <!-- Updated with your custom audio file name -->
-    <audio id="bgMusic" loop preload="auto">
-        <source src="En-jeevan-koshalworldcom_SQRJ0BPH.mp3" type="audio/mpeg">
-    </audio>
+    <!-- Background Music Player -->
+<audio id="bg-music" loop>
+  <source src="en-jeevan.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+    
 
     <div id="musicControl" class="fixed bottom-6 right-6 z-50 hidden">
         <button onclick="toggleMusic()" aria-label="Toggle Music" class="w-12 h-12 bg-royalOlive text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition duration-300 border-2 border-white">
@@ -131,7 +134,7 @@
                 <i class="fa-solid fa-hands-praying text-3xl"></i>
             </div>
             <p class="font-sans text-sm leading-relaxed text-gray-800 mb-8 max-w-sm mx-auto">
-                With the blessings of Almighty and our beloved families, we joyfully invite you to celebrate the union of our lives. Your presence will add immense joy to our auspicious day.
+                With the blessings of our beloved families, we joyfully invite you to celebrate the union of our lives. Your presence will add immense joy to our auspicious day.
             </p>
             <div class="font-script text-4xl text-royalOlive tracking-wide">Our Forever Begins</div>
         </div>
