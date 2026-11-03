@@ -82,14 +82,46 @@
         #musicIcon.playing {
             animation: spin 4s linear infinite;
         }
+
+        /* Chimki / Sparkle Flying Animation Styles */
+        .chimki-container {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 50;
+            overflow: hidden;
+            display: none;
+        }
+        .chimki {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #C5B358;
+            box-shadow: 0 0 10px #fff, 0 0 20px #C5B358;
+            animation: flyChimki 1.5s ease-out forwards;
+            border-radius: 50%;
+        }
+        @keyframes flyChimki {
+            0% {
+                transform: translate(0, 0) scale(0.5);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty)) scale(1.5);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body class="bg-royalDark text-gray-800 min-h-screen opening-in-progress">
 
-    <!-- Background Music Audio Tag using your en-jeevan.mp3 file -->
+    <!-- Background Music Audio Tag -->
     <audio id="bgMusic" loop preload="auto">
         <source src="en-jeevan.mp3" type="audio/mpeg">
     </audio>
+
+    <!-- Chimki / Sparkle Blast Container -->
+    <div id="chimkiBox" class="chimki-container"></div>
 
     <!-- Floating Music Toggle Button -->
     <div id="musicControl" class="fixed bottom-6 right-6 z-50 hidden">
@@ -130,7 +162,7 @@
                 <i class="fa-solid fa-hands-praying text-3xl"></i>
             </div>
             <p class="font-sans text-sm leading-relaxed text-gray-800 mb-8 max-w-sm mx-auto">
-                With the blessings of our beloved families, we joyfully invite you to celebrate the union of our lives. Your presence will add immense joy to our auspicious day.
+                With the blessings of Almighty and our beloved families, we joyfully invite you to celebrate the union of our lives. Your presence will add immense joy to our auspicious day.
             </p>
             <div class="font-script text-4xl text-royalOlive tracking-wide">Our Forever Begins</div>
         </div>
@@ -178,7 +210,7 @@
             </div>
         </div>
 
-        <!-- EVENTS & VENUE -->
+        <!-- EVENTS & VENUE (Working Map Link) -->
         <div class="p-10 bg-royalCream space-y-8">
             <h3 class="font-cinzel font-bold text-royalOlive text-center text-2xl uppercase tracking-wider mb-4">Wedding Events</h3>
             
@@ -190,7 +222,7 @@
                 <i class="fa-solid fa-location-dot text-royalGold text-2xl mb-3"></i>
                 <p class="font-semibold text-royalOlive text-xl">SNS Convention Hall</p>
                 <p class="text-sm text-gray-700 mb-6">Tiptur, Karnataka</p>
-                <a href="https://maps.app.goo.gl/eGqf7fS7wGkGf2i28" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-full py-3 px-6 bg-royalOlive text-[#F3E5AB] rounded-xl font-cinzel text-sm tracking-wider hover:bg-royalOliveLight transition shadow">
+                <a href="https://maps.app.goo.gl/wJmYVfC3Gk7wZ7b77" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-full py-3 px-6 bg-royalOlive text-[#F3E5AB] rounded-xl font-cinzel text-sm tracking-wider hover:bg-royalOliveLight transition shadow">
                     <i class="fa-solid fa-map-location-dot mr-2"></i> Open in Google Maps
                 </a>
             </div>
@@ -231,7 +263,41 @@
                     document.getElementById('musicIcon').classList.remove('playing');
                     document.getElementById('musicIcon').classList.add('fa-play');
                 });
+                
+                triggerChimkiBlast();
                 openDoors();
+            }
+        }
+
+        // Function that creates flying "chimki" sparkles upon opening
+        function triggerChimkiBlast() {
+            const box = document.getElementById('chimkiBox');
+            box.style.display = 'block';
+            for (let i = 0; i < 40; i++) {
+                const chimki = document.createElement('div');
+                chimki.classList.add('chimki');
+                
+                // Random start from center
+                const startX = window.innerWidth / 2;
+                const startY = window.innerHeight / 2;
+                
+                // Random flight direction angles
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 100 + Math.random() * 400;
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance;
+                
+                chimki.style.left = `${startX}px`;
+                chimki.style.top = `${startY}px`;
+                chimki.style.setProperty('--tx', `${tx}px`);
+                chimki.style.setProperty('--ty', `${ty}px`);
+                
+                // Varied colors for sparkling effect (Gold, White, Rose)
+                const colors = ['#C5B358', '#FFFFFF', '#FFD700', '#FFF8DC'];
+                chimki.style.background = colors[Math.floor(Math.random() * colors.length)];
+                
+                box.appendChild(chimki);
+                setTimeout(() => chimki.remove(), 1500);
             }
         }
 
