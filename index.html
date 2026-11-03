@@ -38,59 +38,375 @@
             color: #133529;
             font-family: 'Montserrat', sans-serif;
             overflow-x: hidden;
+            margin: 0;
+            padding: 0;
         }
         .gold-border {
             border: 2px solid #d4af37;
             box-shadow: inset 0 0 15px rgba(212, 175, 55, 0.2), 0 0 15px rgba(212, 175, 55, 0.2);
         }
-        .gold-text {
-            color: #d4af37;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        
+        /* Realistic Emerald Textured Background */
+        .emerald-card-bg {
+            background-color: #133529;
+            background-image: radial-gradient(#1b4a3a 15%, transparent 16%), radial-gradient(#1b4a3a 15%, transparent 16%);
+            background-size: 60px 60px;
+            background-position: 0 0, 30px 30px;
         }
+
         /* Door Opening Animation Styles */
         .door-left, .door-right {
-            transition: transform 1.5s cubic-bezier(0.77, 0, 0.175, 1);
+            transition: transform 1.6s cubic-bezier(0.77, 0, 0.175, 1);
+            backface-visibility: hidden;
         }
         .doors-open .door-left {
-            transform: translateX(-100%);
+            transform: translateX(-105%);
         }
         .doors-open .door-right {
-            transform: translateX(100%);
+            transform: translateX(105%);
         }
+        
+        #mainInvitation {
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 1.5s ease-in, visibility 0s linear 1.5s;
+        }
+        
+        body.invitation-active #mainInvitation {
+            visibility: visible;
+            opacity: 1;
+            transition: opacity 1.5s ease-in, visibility 0s linear 0s;
+        }
+        
         #scratchCanvas {
             touch-action: none;
         }
+        
+        body.opening-in-progress {
+            overflow: hidden;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        #musicIcon.playing {
+            animation: spin 4s linear infinite;
+        }
     </style>
 </head>
-<body class="bg-royalDark text-royalCream min-h-screen relative">
+<body class="bg-royalDark text-royalCream min-h-screen opening-in-progress">
 
-    <!-- Background Music (Replace the source link or filename with your own custom song) -->
-    <audio id="bgMusic" loop>
-        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf756.mp3?filename=romantic-lofi-112154.mp3" type="audio/mpeg">
+    <!-- Background Music -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="https://cdn.pixabay.com/download/audio/2022/02/07/audio_0508ab3378.mp3?filename=indian-wedding-shehnai-music-long-version-8803.mp3" type="audio/mpeg">
     </audio>
 
     <!-- Floating Music Toggle Button -->
     <div id="musicControl" class="fixed bottom-6 right-6 z-50 hidden">
-        <button onclick="toggleMusic()" class="w-12 h-12 bg-royalGold text-royalDark rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition duration-300 border-2 border-white">
-            <i id="musicIcon" class="fa-solid fa-music text-xl animate-spin"></i>
+        <button onclick="toggleMusic()" aria-label="Toggle Music" class="w-12 h-12 bg-royalGold text-royalDark rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition duration-300 border-2 border-white">
+            <i id="musicIcon" class="fa-solid fa-music playing text-xl"></i>
         </button>
     </div>
 
-    <!-- 1. OPENING SCREEN WITH ROYAL DOORS -->
-    <div id="openingScreen" class="fixed inset-0 z-50 flex items-center justify-center bg-royalDark overflow-hidden">
+    <!-- OPENING SCREEN -->
+    <div id="openingScreen" class="fixed inset-0 z-40 flex items-center justify-center bg-royalDark overflow-hidden">
+        <div id="doorLeft" class="door-left absolute top-0 left-0 w-1/2 h-full emerald-card-bg z-20 flex flex-col items-end justify-center shadow-2xl border-r-2 border-royalGold/60">
+            <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#d4af37_1px,transparent_1px)] [background-size:20px_20px]"></div>
+        </div>
+        <div id="doorRight" class="door-right absolute top-0 right-0 w-1/2 h-full emerald-card-bg z-20 flex flex-col items-start justify-center shadow-2xl border-l-2 border-royalGold/60">
+            <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#d4af37_1px,transparent_1px)] [background-size:20px_20px]"></div>
+        </div>
+
+        <div id="sealContainer" class="z-30 flex flex-col items-center justify-center cursor-pointer group transition-all duration-500" onclick="handleFirstInteraction()">
+            <div class="relative px-8 py-7 bg-gradient-to-br from-royalGold via-[#e6ca65] to-[#b8972e] rounded-xl shadow-2xl border-2 border-white/80 group-hover:scale-105 transition duration-500 text-center max-w-[220px]">
+                <div class="absolute inset-1.5 border border-royalDark/30 rounded-lg pointer-events-none"></div>
+                <div class="text-royalDark mb-1">
+                    <i class="fa-solid fa-seedling text-lg mb-1"></i>
+                </div>
+                <h2 class="font-cinzel font-bold text-royalDark text-sm tracking-widest uppercase">TAP TO OPEN</h2>
+                <div class="mt-1 text-royalDark/80 text-[10px] font-cinzel tracking-wider">MEGHASHREE & DARSHAN</div>
+            </div>
+            <p class="font-cinzel text-royalGoldLight text-xs tracking-widest mt-4 bg-royalDark/80 px-4 py-1.5 rounded-full border border-royalGold/40 animate-bounce">Touch seal to enter</p>
+        </div>
+    </div>    <!-- MAIN INVITATION CONTAINER -->
+    <div id="mainInvitation" class="max-w-md mx-auto bg-royalCream text-royalGreen shadow-2xl relative min-h-screen">
         
-        <!-- Left Royal Door -->
-        <div id="doorLeft" class="door-left absolute top-0 left-0 w-1/2 h-full bg-royalGreen border-r-4 border-royalGold z-20 flex flex-col items-end justify-center pr-8 shadow-2xl">
-            <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#d4af37_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        <!-- Top Ornamental Header -->
+        <div class="bg-royalGreen text-royalGold text-center py-10 px-6 relative overflow-hidden border-b-4 border-royalGold">
+            <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#d4af37_1px,transparent_1px)] [background-size:12px_12px]"></div>
+            <p class="font-cinzel tracking-widest text-xs uppercase text-royalGoldLight mb-2">We're Getting Married</p>
+            <h1 class="font-script text-7xl text-royalGold mb-2" style="line-height: 0.9;">Meghashree</h1>
+            <div class="font-cinzel text-2xl text-royalGoldLight my-2">&</div>
+            <h1 class="font-script text-7xl text-royalGold mb-4" style="line-height: 0.9;">Darshan V</h1>
+            <p class="font-sans text-sm tracking-wider text-royalGoldLight/90 italic max-w-sm mx-auto">"Two hearts, one beautiful journey, and a lifetime of togetherness."</p>
         </div>
 
-        <!-- Right Royal Door -->
-        <div id="doorRight" class="door-right absolute top-0 right-0 w-1/2 h-full bg-royalGreen border-l-4 border-royalGold z-20 flex flex-col items-start justify-center pl-8 shadow-2xl">
-            <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#d4af37_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        <!-- Welcome Message Section -->
+        <div class="p-10 text-center bg-royalCream border-b border-royalGold/20">
+            <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-royalGreen/10 flex items-center justify-center text-royalGreen border-2 border-dashed border-royalGreen/20">
+                <i class="fa-solid fa-hands-praying text-3xl"></i>
+            </div>
+            <p class="font-sans text-sm leading-relaxed text-gray-800 mb-8 max-w-sm mx-auto">
+                With the blessings of Almighty and our beloved families, we joyfully invite you to celebrate the union of our lives. Your presence will add immense joy to our auspicious day.
+            </p>
+            <div class="font-script text-4xl text-royalGreen tracking-wide">Our Forever Begins</div>
         </div>
 
-        <!-- Center Seal / Tap to Open Button over the Doors -->
-        <div id="sealContainer" class="z-30 flex flex-col items-center justify-center cursor-pointer group transition-opacity duration-500" onclick="openDoors()">
-            <div class="relative w-36 h-36 rounded-full bg-gradient-to-br from-royalGold via-[#c59b27] to-[#997518] p-1.5 shadow-2xl group-hover:scale-105 transition duration-500 flex items-center justify-center">
-                <div class="w-full h-full rounded-full border-2 border-dashed border-royalDark flex flex-col items-center justify-center bg-royalGold text-center p-2">
-                    <i class="fa-solid fa-ring text-royalDark text-3xl mb-1 animate-pulse"></i>
+        <!-- SCRATCH-TO-REVEAL WEDDING DATE -->
+        <div class="p-10 bg-gradient-to-b from-royalCream to-[#f2ecd9] text-center border-b border-royalGold/20">
+            <h3 class="font-cinzel font-bold text-royalGreen text-xl uppercase tracking-wider mb-3">Save the Date</h3>
+            <p class="text-sm text-gray-700 mb-8 max-w-xs mx-auto">Gently swipe or click the heart below to reveal our special dates.</p>
+            
+            <div class="relative w-80 h-52 mx-auto rounded-2xl overflow-hidden shadow-lg gold-border bg-royalGreen flex items-center justify-center">
+                <!-- Revealed Content underneath -->
+                <div class="absolute inset-0 flex flex-col items-center justify-center p-5 bg-royalCream text-royalGreen z-0">
+                    <i class="fa-solid fa-calendar-heart text-royalGold text-4xl mb-3"></i>
+                    <h4 class="font-cinzel font-bold text-lg tracking-wide">RECEPTION</h4>
+                    <p class="font-cinzel text-2xl font-bold text-royalGreen mt-1">21 NOV 2026</p>
+                    <p class="text-sm text-gray-700 mt-2">7:00 PM Onwards</p>
+                    <p class="text-xs text-gray-600 mt-1">Muhurtha: 22 Nov 2026</p>
+                </div>
+                <!-- Scratch Canvas Layer -->
+                <canvas id="scratchCanvas" width="320" height="208" class="absolute inset-0 z-10 cursor-pointer"></canvas>
+            </div>
+            <button onclick="revealInstantly()" class="mt-6 text-sm font-cinzel text-royalGreen underline tracking-wider hover:text-royalGold transition">Can't scratch? Click here to reveal</button>
+        </div>
+
+        <!-- LIVE WEDDING COUNTDOWN -->
+        <div class="p-10 bg-royalGreen text-royalCream text-center relative">
+            <div class="absolute inset-0 opacity-5 bg-[radial-gradient(#d4af37_1px,transparent_1px)] [background-size:15px_15px]"></div>
+            <h3 class="font-cinzel font-bold text-royalGold text-xl uppercase tracking-wider mb-4 z-10 relative">Counting Down To Forever</h3>
+            <p class="text-sm text-royalGoldLight/80 mb-10 z-10 relative max-w-xs mx-auto">Until we begin our new chapter together (Reception)</p>
+            
+            <div id="countdownTimer" class="grid grid-cols-4 gap-3 max-w-sm mx-auto z-10 relative mb-4">
+                <div class="bg-royalGreenLight gold-border p-4 rounded-xl shadow-inner">
+                    <span id="days" class="font-cinzel text-4xl font-bold text-royalGold block">00</span>
+                    <span class="text-xs uppercase tracking-widest text-royalGoldLight mt-1 block">Days</span>
+                </div>
+                <div class="bg-royalGreenLight gold-border p-4 rounded-xl shadow-inner">
+                    <span id="hours" class="font-cinzel text-4xl font-bold text-royalGold block">00</span>
+                    <span class="text-xs uppercase tracking-widest text-royalGoldLight mt-1 block">Hours</span>
+                </div>
+                <div class="bg-royalGreenLight gold-border p-4 rounded-xl shadow-inner">
+                    <span id="minutes" class="font-cinzel text-4xl font-bold text-royalGold block">00</span>
+                    <span class="text-xs uppercase tracking-widest text-royalGoldLight mt-1 block">Mins</span>
+                </div>
+                <div class="bg-royalGreenLight gold-border p-4 rounded-xl shadow-inner">
+                    <span id="seconds" class="font-cinzel text-4xl font-bold text-royalGold block">00</span>
+                    <span class="text-xs uppercase tracking-widest text-royalGoldLight mt-1 block">Secs</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- WEDDING EVENT DETAILS & VENUE -->
+        <div class="p-10 bg-royalCream space-y-8">
+            <h3 class="font-cinzel font-bold text-royalGreen text-center text-2xl uppercase tracking-wider mb-4">Wedding Events</h3>
+            
+            <!-- Reception Card -->
+            <div class="bg-white p-8 rounded-2xl gold-border shadow-lg text-center relative transform hover:-translate-y-1 transition duration-300">
+                <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-royalGreen text-royalGold px-6 py-2 rounded-full text-sm font-cinzel tracking-widest uppercase shadow-md">Reception</div>
+                <h4 class="font-cinzel font-bold text-2xl text-royalGreen mt-5">21 November 2026</h4>
+                <p class="text-lg text-gray-800 mt-2 font-medium">Saturday, 7:00 PM Onwards</p>
+                <div class="my-6 border-t-2 border-dashed border-royalGreen/10"></div>
+                <i class="fa-solid fa-location-dot text-royalGold text-2xl mb-3"></i>
+                <p class="font-semibold text-royalGreen text-xl">SNS Convention Hall</p>
+                <p class="text-sm text-gray-700 mb-6">Tiptur, Karnataka</p>
+                <a href="https://www.google.com/maps/search/?api=1&query=SNS+Convention+Hall+Tiptur" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-full py-3 px-6 bg-royalGreen text-royalGold rounded-xl font-cinzel text-sm tracking-wider hover:bg-royalGreenLight transition shadow group">
+                    <i class="fa-solid fa-map-location-dot mr-2 group-hover:scale-110 transition"></i> Open in Google Maps
+                </a>
+            </div>
+
+            <!-- Muhurtha Card -->
+            <div class="bg-white p-8 rounded-2xl gold-border shadow-lg text-center relative transform hover:-translate-y-1 transition duration-300">
+                 <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-royalGreen text-royalGold px-6 py-2 rounded-full text-sm font-cinzel tracking-widest uppercase shadow-md">Muhurtha</div>
+                <h4 class="font-cinzel font-bold text-2xl text-royalGreen mt-5">22 November 2026</h4>
+                <p class="text-lg text-gray-800 mt-2 font-medium">Sunday, Auspicious Morning</p>
+                <div class="my-6 border-t-2 border-dashed border-royalGreen/10"></div>
+                 <i class="fa-solid fa-om text-royalGold text-2xl mb-3"></i>
+                <p class="font-semibold text-royalGreen text-xl">SNS Convention Hall</p>
+                <p class="text-sm text-gray-700">Tiptur, Karnataka</p>
+            </div>
+        </div>
+
+        <!-- Footer / Closing Message -->
+        <div class="bg-royalGreen text-royalCream p-10 text-center border-t-4 border-royalGold">
+            <p class="font-cinzel text-sm text-royalGold uppercase tracking-widest mb-4">We Await Your Gracious Presence</p>
+            <h3 class="font-script text-5xl text-royalGoldLight mb-10 leading-tight">With Love, Meghashree & Darshan V</h3>
+            
+            <button onclick="shareInvitation()" class="inline-flex items-center justify-center py-4 px-8 bg-royalGold text-royalDark font-cinzel font-bold text-sm tracking-widest rounded-full shadow-xl hover:bg-royalGoldLight transition transform hover:scale-105">
+                <i class="fa-solid fa-share-nodes mr-3"></i> Share this Invitation
+            </button>
+        </div>
+
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        let musicPlaying = false;
+        let isFirstInteraction = true;
+        const bgMusic = document.getElementById('bgMusic');
+        bgMusic.volume = 0.6;
+
+        function handleFirstInteraction() {
+            if (isFirstInteraction) {
+                isFirstInteraction = false;
+                
+                bgMusic.play().then(() => {
+                    musicPlaying = true;
+                    document.getElementById('musicIcon').classList.add('playing');
+                }).catch(error => {
+                    console.warn("Autoplay restricted:", error);
+                    musicPlaying = false;
+                    document.getElementById('musicIcon').classList.remove('playing');
+                    document.getElementById('musicIcon').classList.add('fa-play');
+                });
+                
+                openDoors();
+            }
+        }
+
+        function openDoors() {
+            const body = document.body;
+            const openingScreen = document.getElementById('openingScreen');
+            
+            body.classList.add('doors-open');
+            document.getElementById('sealContainer').style.opacity = '0';
+
+            setTimeout(() => {
+                openingScreen.style.display = 'none';
+                body.classList.remove('opening-in-progress');
+                body.classList.add('invitation-active');
+                document.getElementById('musicControl').classList.remove('hidden');
+            }, 1600);
+        }
+
+        function toggleMusic() {
+            if (musicPlaying) {
+                bgMusic.pause();
+                musicPlaying = false;
+                document.getElementById('musicIcon').classList.remove('playing', 'fa-pause');
+                document.getElementById('musicIcon').classList.add('fa-play');
+            } else {
+                bgMusic.play().then(() => {
+                    musicPlaying = true;
+                    document.getElementById('musicIcon').classList.remove('fa-play');
+                    document.getElementById('musicIcon').classList.add('playing', 'fa-pause');
+                }).catch(err => console.error(err));
+            }
+        }
+
+        const receptionDate = new Date("November 21, 2026 19:00:00 GMT+0530").getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = receptionDate - now;
+
+            if (distance < 0) {
+                document.getElementById("countdownTimer").innerHTML = "<div class='col-span-4 font-cinzel text-royalGold font-bold text-2xl p-6'>The Wedding Reception is Live! 🎉</div>";
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = String(days).padStart(2, '0');
+            document.getElementById("hours").innerText = String(hours).padStart(2, '0');
+            document.getElementById("minutes").innerText = String(minutes).padStart(2, '0');
+            document.getElementById("seconds").innerText = String(seconds).padStart(2, '0');
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        const canvas = document.getElementById('scratchCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        function initScratchCard() {
+            ctx.fillStyle = '#133529';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = '#d4af37';
+            ctx.lineWidth = 5;
+            ctx.strokeRect(10, 10, canvas.width - 20, canvas.height - 20);
+            
+            ctx.fillStyle = '#d4af37';
+            ctx.font = 'bold 20px Cinzel, serif';
+            ctx.textAlign = 'center';
+            ctx.fillText("✨ SCRATCH TO REVEAL ✨", canvas.width / 2, canvas.height / 2 - 10);
+            ctx.font = '14px Montserrat, sans-serif';
+            ctx.fillStyle = '#f3e5ab';
+            ctx.fillText("Swipe with finger or mouse", canvas.width / 2, canvas.height / 2 + 20);
+        }
+        initScratchCard();
+
+        let isScratching = false;
+
+        function getMousePos(e) {
+            const rect = canvas.getBoundingClientRect();
+            return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+        }
+
+        function getTouchPos(e) {
+            const rect = canvas.getBoundingClientRect();
+            return { x: e.touches[0].clientX - rect.left, y: e.touches[0].clientY - rect.top };
+        }
+
+        function scratch(pos) {
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.beginPath();
+            ctx.arc(pos.x, pos.y, 30, 0, Math.PI * 2, false);
+            ctx.fill();
+            checkScratchProgress();
+        }
+
+        function checkScratchProgress() {
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            let transparentPixels = 0;
+            for (let i = 3; i < imageData.data.length; i += 4) {
+                if (imageData.data[i] === 0) transparentPixels++;
+            }
+            if (transparentPixels > (canvas.width * canvas.height) * 0.4) {
+                canvas.style.opacity = '0';
+                canvas.style.transition = 'opacity 0.5s ease';
+                setTimeout(() => canvas.style.display = 'none', 500);
+            }
+        }
+
+        canvas.addEventListener('mousedown', (e) => { isScratching = true; scratch(getMousePos(e)); });
+        window.addEventListener('mousemove', (e) => { if (isScratching) scratch(getMousePos(e)); });
+        window.addEventListener('mouseup', () => isScratching = false);
+
+        canvas.addEventListener('touchstart', (e) => { isScratching = true; scratch(getTouchPos(e)); });
+        window.addEventListener('touchmove', (e) => {
+            if (isScratching) {
+                if (e.cancelable) e.preventDefault();
+                scratch(getTouchPos(e));
+            }
+        }, { passive: false });
+        window.addEventListener('touchend', () => isScratching = false);
+
+        function revealInstantly() {
+            canvas.style.opacity = '0';
+            canvas.style.transition = 'opacity 0.5s ease';
+            setTimeout(() => canvas.style.display = 'none', 500);
+        }
+
+        function shareInvitation() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Wedding Invitation: Meghashree & Darshan V',
+                    text: 'Join us in celebrating the wedding of Meghashree & Darshan V on Nov 21-22, 2026!',
+                    url: window.location.href
+                }).catch(() => {});
+            } else {
+                navigator.clipboard.writeText(window.location.href).then(() => {
+                    alert('Invitation link copied to clipboard!');
+                });
+            }
+        }
+    </script>
+</body>
+</html>
+
+    
