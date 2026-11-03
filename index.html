@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meghashree & Darshan V - Wedding Invitation</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        royalGreen: '#133529',
+                        royalGreenLight: '#1b4a3a',
+                        royalGold: '#d4af37',
+                        royalGoldLight: '#f3e5ab',
+                        royalCream: '#fbf9f4',
+                        royalDark: '#0b2018'
+                    },
+                    fontFamily: {
+                        cinzel: ['Cinzel', 'serif'],
+                        script: ['Great Vibes', 'cursive'],
+                        sans: ['Montserrat', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0b2018;
+            color: #133529;
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+        }
+        .gold-border {
+            border: 2px solid #d4af37;
+            box-shadow: inset 0 0 15px rgba(212, 175, 55, 0.2), 0 0 15px rgba(212, 175, 55, 0.2);
+        }
+        .gold-text {
+            color: #d4af37;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        /* Door Opening Animation Styles */
+        .door-left, .door-right {
+            transition: transform 1.5s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+        .doors-open .door-left {
+            transform: translateX(-100%);
+        }
+        .doors-open .door-right {
+            transform: translateX(100%);
+        }
+        #scratchCanvas {
+            touch-action: none;
+        }
+    </style>
+</head>
+<body class="bg-royalDark text-royalCream min-h-screen relative">
+
+    <!-- Background Music (Replace the source link or filename with your own custom song) -->
+    <audio id="bgMusic" loop>
+        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf756.mp3?filename=romantic-lofi-112154.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Floating Music Toggle Button -->
+    <div id="musicControl" class="fixed bottom-6 right-6 z-50 hidden">
+        <button onclick="toggleMusic()" class="w-12 h-12 bg-royalGold text-royalDark rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition duration-300 border-2 border-white">
+            <i id="musicIcon" class="fa-solid fa-music text-xl animate-spin"></i>
+        </button>
+    </div>
+
+    <!-- 1. OPENING SCREEN WITH ROYAL DOORS -->
+    <div id="openingScreen" class="fixed inset-0 z-50 flex items-center justify-center bg-royalDark overflow-hidden">
+        
+        <!-- Left Royal Door -->
+        <div id="doorLeft" class="door-left absolute top-0 left-0 w-1/2 h-full bg-royalGreen border-r-4 border-royalGold z-20 flex flex-col items-end justify-center pr-8 shadow-2xl">
+            <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#d4af37_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        </div>
+
+        <!-- Right Royal Door -->
+        <div id="doorRight" class="door-right absolute top-0 right-0 w-1/2 h-full bg-royalGreen border-l-4 border-royalGold z-20 flex flex-col items-start justify-center pl-8 shadow-2xl">
+            <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#d4af37_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        </div>
+
+        <!-- Center Seal / Tap to Open Button over the Doors -->
+        <div id="sealContainer" class="z-30 flex flex-col items-center justify-center cursor-pointer group transition-opacity duration-500" onclick="openDoors()">
+            <div class="relative w-36 h-36 rounded-full bg-gradient-to-br from-royalGold via-[#c59b27] to-[#997518] p-1.5 shadow-2xl group-hover:scale-105 transition duration-500 flex items-center justify-center">
+                <div class="w-full h-full rounded-full border-2 border-dashed border-royalDark flex flex-col items-center justify-center bg-royalGold text-center p-2">
+                    <i class="fa-solid fa-ring text-royalDark text-3xl mb-1 animate-pulse"></i>
