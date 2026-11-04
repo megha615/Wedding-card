@@ -1,3 +1,4 @@
+<!--
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,7 +43,7 @@
             padding: 0;
         }
 
-        /* Realistic Olive Textured Background with Gold Floral Motifs */
+        /* Realistic Olive Textured Background with Gold Floral Motifs matching reference */
         .olive-card-bg {
             background-color: #787c5c;
             background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239c9f84' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
@@ -138,7 +139,7 @@
         </button>
     </div>
 
-    <!-- OPENING SCREEN WITH 3D OLIVE DOORS & PINYON SCRIPT FONT PLAQUE -->
+    <!-- OPENING SCREEN WITH 3D OLIVE DOORS & REFERENCE PLQUE -->
     <div id="openingScreen" class="fixed inset-0 z-40 flex items-center justify-center bg-royalDark overflow-hidden">
         
         <!-- Left Door Flap -->
@@ -147,21 +148,19 @@
         <!-- Right Door Flap -->
         <div id="doorRight" class="door-right absolute top-0 right-0 w-1/2 h-full olive-card-bg z-20 flex flex-col items-start justify-center shadow-2xl"></div>
 
-        <!-- Center Cream Ornamental Plaque with New Font -->
+        <!-- Center Cream Ornamental Plaque ("TAP TO OPEN" bridging the split) -->
         <div id="sealContainer" class="z-30 flex flex-col items-center justify-center cursor-pointer group transition-all duration-500" onclick="handleFirstInteraction()">
-            <div class="relative px-10 py-8 bg-royalCream rounded-3xl shadow-2xl border-4 border-[#B8A64E] group-hover:scale-105 transition duration-500 text-center max-w-[280px]">
+            <div class="relative px-12 py-10 bg-royalCream rounded-3xl shadow-2xl border-4 border-[#B8A64E] group-hover:scale-105 transition duration-500 text-center max-w-[260px]">
                 <div class="absolute inset-3 border-2 border-[#B8A64E]/50 rounded-2xl pointer-events-none"></div>
-                <div class="text-[#B8A64E] mb-2">
+                <div class="text-[#B8A64E] mb-3">
                      <i class="fa-solid fa-om text-xl opacity-80"></i>
                 </div>
-                <h2 class="font-cinzel font-bold text-[#5C6047] text-xs tracking-[.2em] uppercase mb-1">TAP TO OPEN</h2>
-                <!-- Using font-pinyon and larger font size for an ultra-luxury cursive look -->
-                <div class="text-[#787C5C] text-2xl font-pinyon tracking-wide mt-1">Meghashree & Darshan</div>
+                <h2 class="font-cinzel font-bold text-[#5C6047] text-sm tracking-[.25em] uppercase">TAP TO OPEN</h2>
+                <div class="mt-3 text-[#787C5C] text-[11px] font-script tracking-wider font-bold">MEGHASHREE & DARSHAN</div>
             </div>
              <p class="font-cinzel text-royalCream text-xs tracking-widest mt-5 bg-royalDark/90 px-5 py-2 rounded-full border border-royalGold/30 animate-bounce shadow-lg">Touch seal to enter</p>
         </div>
-    </div>
-        <!-- MAIN INVITATION CONTAINER -->
+    </div>    <!-- MAIN INVITATION CONTAINER -->
     <div id="mainInvitation" class="max-w-md mx-auto bg-royalCream text-gray-800 shadow-2xl relative min-h-screen z-20">
         
         <div class="bg-royalOlive text-white text-center py-10 px-6 relative overflow-hidden border-b-4 border-[#B8A64E]">
@@ -225,7 +224,7 @@
             </div>
         </div>
 
-        <!-- EVENTS & VENUE (Using Reliable Universal Map Search Link) -->
+        <!-- EVENTS & VENUE -->
         <div class="p-10 bg-royalCream space-y-8">
             <h3 class="font-cinzel font-bold text-royalOlive text-center text-2xl uppercase tracking-wider mb-4">Wedding Events</h3>
             
@@ -265,31 +264,19 @@
         let musicPlaying = false;
         let isFirstInteraction = true;
         const bgMusic = document.getElementById('bgMusic');
-        
-        if (bgMusic) {
-            bgMusic.volume = 0.6;
-        }
+        bgMusic.volume = 0.6;
 
         function handleFirstInteraction() {
             if (isFirstInteraction) {
                 isFirstInteraction = false;
-                
-                // Safely attempt to play music without breaking the door animation if blocked
-                if (bgMusic) {
-                    bgMusic.play().then(() => {
-                        musicPlaying = true;
-                        const icon = document.getElementById('musicIcon');
-                        if (icon) icon.classList.add('playing');
-                    }).catch(error => {
-                        console.warn("Autoplay restricted by browser:", error);
-                        musicPlaying = false;
-                        const icon = document.getElementById('musicIcon');
-                        if (icon) {
-                            icon.classList.remove('playing');
-                            icon.classList.add('fa-play');
-                        }
-                    });
-                }
+                bgMusic.play().then(() => {
+                    musicPlaying = true;
+                    document.getElementById('musicIcon').classList.add('playing');
+                }).catch(error => {
+                    musicPlaying = false;
+                    document.getElementById('musicIcon').classList.remove('playing');
+                    document.getElementById('musicIcon').classList.add('fa-play');
+                });
                 
                 startContinuousChimki();
                 openDoors();
@@ -298,8 +285,6 @@
 
         function startContinuousChimki() {
             const container = document.getElementById('continuousChimkiBox');
-            if (!container) return;
-            
             container.style.display = 'block';
 
             setInterval(() => {
@@ -329,40 +314,29 @@
         function openDoors() {
             const body = document.body;
             const openingScreen = document.getElementById('openingScreen');
-            const sealContainer = document.getElementById('sealContainer');
-            
             body.classList.add('doors-open');
-            if (sealContainer) sealContainer.style.opacity = '0';
+            document.getElementById('sealContainer').style.opacity = '0';
 
             setTimeout(() => {
-                if (openingScreen) openingScreen.style.display = 'none';
+                openingScreen.style.display = 'none';
                 body.classList.remove('opening-in-progress');
                 body.classList.add('invitation-active');
-                
-                const musicControl = document.getElementById('musicControl');
-                if (musicControl) musicControl.classList.remove('hidden');
+                document.getElementById('musicControl').classList.remove('hidden');
             }, 1800);
         }
 
         function toggleMusic() {
-            if (!bgMusic) return;
-            
-            const icon = document.getElementById('musicIcon');
             if (musicPlaying) {
                 bgMusic.pause();
                 musicPlaying = false;
-                if (icon) {
-                    icon.classList.remove('playing', 'fa-pause');
-                    icon.classList.add('fa-play');
-                }
+                document.getElementById('musicIcon').classList.remove('playing', 'fa-pause');
+                document.getElementById('musicIcon').classList.add('fa-play');
             } else {
                 bgMusic.play().then(() => {
                     musicPlaying = true;
-                    if (icon) {
-                        icon.classList.remove('fa-play');
-                        icon.classList.add('playing', 'fa-pause');
-                    }
-                }).catch(err => console.error("Playback error:", err));
+                    document.getElementById('musicIcon').classList.remove('fa-play');
+                    document.getElementById('musicIcon').classList.add('playing', 'fa-pause');
+                }).catch(err => console.error(err));
             }
         }
 
@@ -371,12 +345,9 @@
         function updateCountdown() {
             const now = new Date().getTime();
             const distance = receptionDate - now;
-            const timerEl = document.getElementById("countdownTimer");
-
-            if (!timerEl) return;
 
             if (distance < 0) {
-                timerEl.innerHTML = "<div class='col-span-4 font-cinzel text-[#F3E5AB] font-bold text-2xl p-6'>The Wedding Reception is Live! 🎉</div>";
+                document.getElementById("countdownTimer").innerHTML = "<div class='col-span-4 font-cinzel text-[#F3E5AB] font-bold text-2xl p-6'>The Wedding Reception is Live! 🎉</div>";
                 return;
             }
 
@@ -385,67 +356,57 @@
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            const daysEl = document.getElementById("days");
-            const hoursEl = document.getElementById("hours");
-            const minsEl = document.getElementById("minutes");
-            const secsEl = document.getElementById("seconds");
-
-            if (daysEl) daysEl.innerText = String(days).padStart(2, '0');
-            if (hoursEl) hoursEl.innerText = String(hours).padStart(2, '0');
-            if (minsEl) minsEl.innerText = String(minutes).padStart(2, '0');
-            if (secsEl) secsEl.innerText = String(secs).padStart(2, '0');
+            document.getElementById("days").innerText = String(days).padStart(2, '0');
+            document.getElementById("hours").innerText = String(hours).padStart(2, '0');
+            document.getElementById("minutes").innerText = String(minutes).padStart(2, '0');
+            document.getElementById("seconds").innerText = String(seconds).padStart(2, '0');
         }
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
         const canvas = document.getElementById('scratchCanvas');
-        if (canvas) {
-            const ctx = canvas.getContext('2d');
-            
-            function initScratchCard() {
-                ctx.fillStyle = '#787C5C';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = '#C5B358';
-                ctx.font = 'bold 16px Cinzel, sans-serif';
-                ctx.textAlign = 'center';
-                ctx.fillText('✨ Scratch Here to Reveal ✨', canvas.width / 2, canvas.height / 2);
-            }
-            initScratchCard();
+        const ctx = canvas.getContext('2d');
+        
+        function initScratchCard() {
+            ctx.fillStyle = '#787C5C';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#C5B358';
+            ctx.font = 'bold 16px Cinzel, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('✨ Scratch Here to Reveal ✨', canvas.width / 2, canvas.height / 2);
+        }
+        initScratchCard();
 
-            let isDrawing = false;
-            function getPos(e) {
-                const rect = canvas.getBoundingClientRect();
-                return {
-                    x: (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left,
-                    y: (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top
-                };
-            }
-
-            function scratch(e) {
-                if (!isDrawing) return;
-                e.preventDefault();
-                const pos = getPos(e);
-                ctx.globalCompositeOperation = 'destination-out';
-                ctx.beginPath();
-                ctx.arc(pos.x, pos.y, 25, 0, Math.PI * 2);
-                ctx.fill();
-            }
-
-            canvas.addEventListener('mousedown', (e) => { isDrawing = true; scratch(e); });
-            canvas.addEventListener('mousemove', scratch);
-            window.addEventListener('mouseup', () => isDrawing = false);
-
-            canvas.addEventListener('touchstart', (e) => { isDrawing = true; scratch(e); }, {passive: false});
-            canvas.addEventListener('touchmove', scratch, {passive: false});
-            window.addEventListener('touchend', () => isDrawing = false);
-
-            window.revealInstantly = function() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let isDrawing = false;
+        function getPos(e) {
+            const rect = canvas.getBoundingClientRect();
+            return {
+                x: (e.clientX || e.touches[0].clientX) - rect.left,
+                y: (e.clientY || e.touches[0].clientY) - rect.top
             };
+        }
+
+        function scratch(e) {
+            if (!isDrawing) return;
+            e.preventDefault();
+            const pos = getPos(e);
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.beginPath();
+            ctx.arc(pos.x, pos.y, 25, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        canvas.addEventListener('mousedown', (e) => { isDrawing = true; scratch(e); });
+        canvas.addEventListener('mousemove', scratch);
+        window.addEventListener('mouseup', () => isDrawing = false);
+
+        canvas.addEventListener('touchstart', (e) => { isDrawing = true; scratch(e); });
+        canvas.addEventListener('touchmove', scratch);
+        window.addEventListener('touchend', () => isDrawing = false);
+
+        function revealInstantly() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
         }
     </script>
 </body>
 </html>
-
-
-    
