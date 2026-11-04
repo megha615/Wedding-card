@@ -39,16 +39,13 @@
             overflow-x: hidden;
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
         }
-        
-        /* Realistic Olive Textured Background with Gold Floral Motifs */
+
+        /* Realistic Olive Textured Background with Gold Floral Motifs matching reference */
         .olive-card-bg {
             background-color: #787c5c;
             background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239c9f84' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.3);
         }
 
         /* Door Opening Animation Styles */
@@ -73,21 +70,17 @@
             opacity: 0;
             transition: opacity 1.5s ease-in, visibility 0s linear 1.5s;
         }
-        
         body.invitation-active #mainInvitation {
             visibility: visible;
             opacity: 1;
             transition: opacity 1.5s ease-in, visibility 0s linear 0s;
         }
-        
         #scratchCanvas {
             touch-action: none;
         }
-        
         body.opening-in-progress {
             overflow: hidden;
         }
-        
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
@@ -129,7 +122,7 @@
 </head>
 <body class="bg-royalDark text-gray-800 min-h-screen opening-in-progress">
 
-    <!-- Background Music -->
+    <!-- Background Music Audio Tag -->
     <audio id="bgMusic" loop preload="auto">
         <source src="en-jeevan.mp3" type="audio/mpeg">
     </audio>
@@ -144,35 +137,31 @@
         </button>
     </div>
 
-    <!-- 1. OPENING SCREEN MATCHING REFERENCE -->
+    <!-- OPENING SCREEN WITH 3D OLIVE DOORS & REFERENCE PLQUE -->
     <div id="openingScreen" class="fixed inset-0 z-40 flex items-center justify-center bg-royalDark overflow-hidden">
         
         <!-- Left Door Flap -->
-        <div id="doorLeft" class="door-left absolute top-0 left-0 w-1/2 h-full olive-card-bg z-20 flex flex-col items-end justify-center shadow-2xl">
-        </div>
+        <div id="doorLeft" class="door-left absolute top-0 left-0 w-1/2 h-full olive-card-bg z-20 flex flex-col items-end justify-center shadow-2xl"></div>
 
         <!-- Right Door Flap -->
-        <div id="doorRight" class="door-right absolute top-0 right-0 w-1/2 h-full olive-card-bg z-20 flex flex-col items-start justify-center shadow-2xl">
-        </div>
+        <div id="doorRight" class="door-right absolute top-0 right-0 w-1/2 h-full olive-card-bg z-20 flex flex-col items-start justify-center shadow-2xl"></div>
 
-        <!-- Center Cream Ornamental Plaque ("TAP TO OPEN") -->
+        <!-- Center Cream Ornamental Plaque ("TAP TO OPEN" bridging the split) -->
         <div id="sealContainer" class="z-30 flex flex-col items-center justify-center cursor-pointer group transition-all duration-500" onclick="handleFirstInteraction()">
             <div class="relative px-12 py-10 bg-royalCream rounded-3xl shadow-2xl border-4 border-[#B8A64E] group-hover:scale-105 transition duration-500 text-center max-w-[260px]">
                 <div class="absolute inset-3 border-2 border-[#B8A64E]/50 rounded-2xl pointer-events-none"></div>
-                
                 <div class="text-[#B8A64E] mb-3">
                      <i class="fa-solid fa-om text-xl opacity-80"></i>
                 </div>
                 <h2 class="font-cinzel font-bold text-[#5C6047] text-sm tracking-[.25em] uppercase">TAP TO OPEN</h2>
                 <div class="mt-3 text-[#787C5C] text-[11px] font-script tracking-wider font-bold">MEGHASHREE & DARSHAN</div>
             </div>
-             <p class="font-cinzel text-royalCream text-xs tracking-widest mt-5 bg-royalDark/80 px-5 py-2 rounded-full border border-royalGold/30 animate-bounce">Touch seal to enter</p>
+             <p class="font-cinzel text-royalCream text-xs tracking-widest mt-5 bg-royalDark/90 px-5 py-2 rounded-full border border-royalGold/30 animate-bounce shadow-lg">Touch seal to enter</p>
         </div>
     </div>
-        <!-- MAIN INVITATION CONTAINER (Centered Card Format) -->
-    <div id="mainInvitation" class="max-w-md mx-auto bg-royalCream text-gray-800 shadow-2xl relative min-h-screen z-20 my-auto">
+        <!-- MAIN INVITATION CONTAINER -->
+    <div id="mainInvitation" class="max-w-md mx-auto bg-royalCream text-gray-800 shadow-2xl relative min-h-screen z-20">
         
-        <!-- Top Ornamental Header -->
         <div class="bg-royalOlive text-white text-center py-10 px-6 relative overflow-hidden border-b-4 border-[#B8A64E]">
             <p class="font-cinzel tracking-widest text-xs uppercase text-[#F3E5AB] mb-2 z-10 relative">Sri Ganesha Namaha</p>
             <h1 class="font-script text-7xl text-[#F3E5AB] mb-2 z-10 relative" style="line-height: 0.9;">Meghashree</h1>
@@ -181,7 +170,6 @@
             <p class="font-sans text-sm tracking-wider text-[#F3E5AB]/90 italic max-w-sm mx-auto z-10 relative">"Two hearts, one beautiful journey, and a lifetime of togetherness."</p>
         </div>
 
-        <!-- Welcome Message Section -->
         <div class="p-10 text-center bg-royalCream border-b border-[#B8A64E]/20">
             <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-royalOlive/10 flex items-center justify-center text-royalOlive border-2 border-dashed border-royalOlive/20">
                 <i class="fa-solid fa-hands-praying text-3xl"></i>
@@ -192,13 +180,12 @@
             <div class="font-script text-4xl text-royalOlive tracking-wide">Our Forever Begins</div>
         </div>
 
-        <!-- SCRATCH-TO-REVEAL WEDDING DATE -->
+        <!-- SCRATCH-TO-REVEAL -->
         <div class="p-10 bg-gradient-to-b from-royalCream to-[#EEEED0] text-center border-b border-[#B8A64E]/20">
             <h3 class="font-cinzel font-bold text-royalOlive text-xl uppercase tracking-wider mb-3">Save the Date</h3>
-            <p class="text-sm text-gray-700 mb-8 max-w-xs mx-auto">Gently swipe or click the box below to reveal our special dates.</p>
+            <p class="text-sm text-gray-700 mb-8 max-w-xs mx-auto">Gently swipe or click the heart below to reveal our special dates.</p>
             
             <div class="relative w-80 h-52 mx-auto rounded-2xl overflow-hidden shadow-lg bg-royalOlive flex items-center justify-center">
-                <!-- Revealed Content underneath -->
                 <div class="absolute inset-0 flex flex-col items-center justify-center p-5 bg-royalCream text-royalOlive z-0">
                     <i class="fa-solid fa-calendar-heart text-royalGold text-4xl mb-3"></i>
                     <h4 class="font-cinzel font-bold text-lg tracking-wide">RECEPTION</h4>
@@ -206,42 +193,40 @@
                     <p class="text-sm text-gray-700 mt-2">7:00 PM Onwards</p>
                     <p class="text-xs text-gray-600 mt-1">Muhurtha: 22 Nov 2026</p>
                 </div>
-                <!-- Scratch Canvas Layer -->
                 <canvas id="scratchCanvas" width="320" height="208" class="absolute inset-0 z-10 cursor-pointer"></canvas>
             </div>
             <button onclick="revealInstantly()" class="mt-6 text-sm font-cinzel text-royalOlive underline tracking-wider hover:text-[#B8A64E] transition">Can't scratch? Click here to reveal</button>
         </div>
 
-        <!-- LIVE WEDDING COUNTDOWN -->
+        <!-- COUNTDOWN TIMER -->
         <div class="p-10 bg-royalOlive text-white text-center relative">
             <h3 class="font-cinzel font-bold text-[#F3E5AB] text-xl uppercase tracking-wider mb-4 z-10 relative">Counting Down To Forever</h3>
             <p class="text-sm text-[#F3E5AB]/80 mb-10 z-10 relative max-w-xs mx-auto">Until we begin our new chapter together (Reception)</p>
             
             <div id="countdownTimer" class="grid grid-cols-4 gap-3 max-w-sm mx-auto z-10 relative mb-4">
                 <div class="bg-royalOliveLight p-4 rounded-xl shadow-inner">
-                    <span id="days" class="font-cinzel text-3xl font-bold text-[#F3E5AB] block">00</span>
+                    <span id="days" class="font-cinzel text-4xl font-bold text-[#F3E5AB] block">00</span>
                     <span class="text-xs uppercase tracking-widest text-[#F3E5AB] mt-1 block">Days</span>
                 </div>
                 <div class="bg-royalOliveLight p-4 rounded-xl shadow-inner">
-                    <span id="hours" class="font-cinzel text-3xl font-bold text-[#F3E5AB] block">00</span>
+                    <span id="hours" class="font-cinzel text-4xl font-bold text-[#F3E5AB] block">00</span>
                     <span class="text-xs uppercase tracking-widest text-[#F3E5AB] mt-1 block">Hours</span>
                 </div>
                 <div class="bg-royalOliveLight p-4 rounded-xl shadow-inner">
-                    <span id="minutes" class="font-cinzel text-3xl font-bold text-[#F3E5AB] block">00</span>
+                    <span id="minutes" class="font-cinzel text-4xl font-bold text-[#F3E5AB] block">00</span>
                     <span class="text-xs uppercase tracking-widest text-[#F3E5AB] mt-1 block">Mins</span>
                 </div>
                 <div class="bg-royalOliveLight p-4 rounded-xl shadow-inner">
-                    <span id="seconds" class="font-cinzel text-3xl font-bold text-[#F3E5AB] block">00</span>
+                    <span id="seconds" class="font-cinzel text-4xl font-bold text-[#F3E5AB] block">00</span>
                     <span class="text-xs uppercase tracking-widest text-[#F3E5AB] mt-1 block">Secs</span>
                 </div>
             </div>
         </div>
 
-        <!-- WEDDING EVENT DETAILS & VENUE -->
+        <!-- EVENTS & VENUE -->
         <div class="p-10 bg-royalCream space-y-8">
             <h3 class="font-cinzel font-bold text-royalOlive text-center text-2xl uppercase tracking-wider mb-4">Wedding Events</h3>
             
-            <!-- Reception Card -->
             <div class="bg-white p-8 rounded-2xl shadow-lg text-center relative border border-[#B8A64E]/30">
                 <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-royalOlive text-[#F3E5AB] px-6 py-2 rounded-full text-sm font-cinzel tracking-widest uppercase shadow-md">Reception</div>
                 <h4 class="font-cinzel font-bold text-2xl text-royalOlive mt-5">21 November 2026</h4>
@@ -253,29 +238,28 @@
                 <a href="https://www.google.com/maps/search/?api=1&query=SNS+Convention+Hall+Tiptur+Karnataka+572201" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-full py-3 px-6 bg-royalOlive text-[#F3E5AB] rounded-xl font-cinzel text-sm tracking-wider hover:bg-royalOliveLight transition shadow">
                     <i class="fa-solid fa-map-location-dot mr-2"></i> Open in Google Maps
                 </a>
+
             </div>
 
-            <!-- Muhurtha Card -->
             <div class="bg-white p-8 rounded-2xl shadow-lg text-center relative border border-[#B8A64E]/30">
-                 <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-royalOlive text-[#F3E5AB] px-6 py-2 rounded-full text-sm font-cinzel tracking-widest uppercase shadow-md">Muhurtha</div>
+                <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-royalOlive text-[#F3E5AB] px-6 py-2 rounded-full text-sm font-cinzel tracking-widest uppercase shadow-md">Muhurtha</div>
                 <h4 class="font-cinzel font-bold text-2xl text-royalOlive mt-5">22 November 2026</h4>
                 <p class="text-lg text-gray-800 mt-2 font-medium">Sunday, Auspicious Morning</p>
                 <div class="my-6 border-t-2 border-dashed border-royalOlive/10"></div>
-                 <i class="fa-solid fa-om text-royalGold text-2xl mb-3"></i>
+                <i class="fa-solid fa-om text-royalGold text-2xl mb-3"></i>
                 <p class="font-semibold text-royalOlive text-xl">SNS Convention Hall</p>
                 <p class="text-sm text-gray-700">Tiptur, Karnataka</p>
             </div>
         </div>
 
-        <!-- Footer / Closing Message -->
         <div class="bg-royalOlive text-[#F3E5AB] p-10 text-center border-t-4 border-[#B8A64E]">
             <p class="font-cinzel text-sm uppercase tracking-widest mb-4">We Await Your Gracious Presence</p>
-            <h3 class="font-script text-5xl mb-6 leading-tight">With Love, Meghashree & Darshan V</h3>
+            <h3 class="font-script text-5xl mb-10 leading-tight">With Love, Meghashree & Darshan V</h3>
         </div>
 
     </div>
 
-    <!-- JavaScript Logic -->
+    <!-- JAVASCRIPT -->
     <script>
         let musicPlaying = false;
         let isFirstInteraction = true;
@@ -285,12 +269,10 @@
         function handleFirstInteraction() {
             if (isFirstInteraction) {
                 isFirstInteraction = false;
-                
                 bgMusic.play().then(() => {
                     musicPlaying = true;
                     document.getElementById('musicIcon').classList.add('playing');
                 }).catch(error => {
-                    console.warn("Autoplay restricted:", error);
                     musicPlaying = false;
                     document.getElementById('musicIcon').classList.remove('playing');
                     document.getElementById('musicIcon').classList.add('fa-play');
@@ -332,7 +314,6 @@
         function openDoors() {
             const body = document.body;
             const openingScreen = document.getElementById('openingScreen');
-            
             body.classList.add('doors-open');
             document.getElementById('sealContainer').style.opacity = '0';
 
