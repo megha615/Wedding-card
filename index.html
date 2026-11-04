@@ -677,19 +677,31 @@
         let musicPlaying = false;
         let isFirstInteraction = true;
         const bgMusic = document.getElementById('bgMusic');
-        bgMusic.volume = 0.6;
+        
+        if (bgMusic) {
+            bgMusic.volume = 0.6;
+        }
 
         function handleFirstInteraction() {
             if (isFirstInteraction) {
                 isFirstInteraction = false;
-                bgMusic.play().then(() => {
-                    musicPlaying = true;
-                    document.getElementById('musicIcon').classList.add('playing');
-                }).catch(error => {
-                    musicPlaying = false;
-                    document.getElementById('musicIcon').classList.remove('playing');
-                    document.getElementById('musicIcon').classList.add('fa-play');
-                });
+                
+                // Safely attempt to play music without breaking the door animation if blocked
+                if (bgMusic) {
+                    bgMusic.play().then(() => {
+                        musicPlaying = true;
+                        const icon = document.getElementById('musicIcon');
+                        if (icon) icon.classList.add('playing');
+                    }).catch(error => {
+                        console.warn("Autoplay restricted by browser:", error);
+                        musicPlaying = false;
+                        const icon = document.getElementById('musicIcon');
+                        if (icon) {
+                            icon.classList.remove('playing');
+                            icon.classList.add('fa-play');
+                        }
+                    });
+                }
                 
                 startContinuousChimki();
                 openDoors();
@@ -698,6 +710,8 @@
 
         function startContinuousChimki() {
             const container = document.getElementById('continuousChimkiBox');
+            if (!container) return;
+            
             container.style.display = 'block';
 
             setInterval(() => {
@@ -727,29 +741,40 @@
         function openDoors() {
             const body = document.body;
             const openingScreen = document.getElementById('openingScreen');
+            const sealContainer = document.getElementById('sealContainer');
+            
             body.classList.add('doors-open');
-            document.getElementById('sealContainer').style.opacity = '0';
+            if (sealContainer) sealContainer.style.opacity = '0';
 
             setTimeout(() => {
-                openingScreen.style.display = 'none';
+                if (openingScreen) openingScreen.style.display = 'none';
                 body.classList.remove('opening-in-progress');
                 body.classList.add('invitation-active');
-                document.getElementById('musicControl').classList.remove('hidden');
+                
+                const musicControl = document.getElementById('musicControl');
+                if (musicControl) musicControl.classList.remove('hidden');
             }, 1800);
         }
 
         function toggleMusic() {
+            if (!bgMusic) return;
+            
+            const icon = document.getElementById('musicIcon');
             if (musicPlaying) {
                 bgMusic.pause();
                 musicPlaying = false;
-                document.getElementById('musicIcon').classList.remove('playing', 'fa-pause');
-                document.getElementById('musicIcon').classList.add('fa-play');
+                if (icon) {
+                    icon.classList.remove('playing', 'fa-pause');
+                    icon.classList.add('fa-play');
+                }
             } else {
                 bgMusic.play().then(() => {
                     musicPlaying = true;
-                    document.getElementById('musicIcon').classList.remove('fa-play');
-                    document.getElementById('musicIcon').classList.add('playing', 'fa-pause');
-                }).catch(err => console.error(err));
+                    if (icon) {
+                        icon.classList.remove('fa-play');
+                        icon.classList.add('playing', 'fa-pause');
+                    }
+                }).catch(err => console.error("Playback error:", err));
             }
         }
 
@@ -758,9 +783,12 @@
         function updateCountdown() {
             const now = new Date().getTime();
             const distance = receptionDate - now;
+            const timerEl = document.getElementById("countdownTimer");
+
+            if (!timerEl) return;
 
             if (distance < 0) {
-                document.getElementById("countdownTimer").innerHTML = "<div class='col-span-4 font-cinzel text-[#F3E5AB] font-bold text-2xl p-6'>The Wedding Reception is Live! 🎉</div>";
+                timerEl.innerHTML = "<div class='col-span-4 font-cinzel text-[#F3E5AB] font-bold text-2xl p-6'>The Wedding Reception is Live! 🎉</div>";
                 return;
             }
 
@@ -769,56 +797,63 @@
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            document.getElementById("days").innerText = String(days).padStart(2, '0');
-            document.getElementById("hours").innerText = String(hours).padStart(2, '0');
-            document.getElementById("minutes").innerText = String(minutes).padStart(2, '0');
-            document.getElementById("seconds").innerText = String(seconds).padStart(2, '0');
+            const daysEl = document.getElementById("days");
+            const hoursEl = document.getElementById("hours");
+            const minsEl = document.getElementById("minutes");
+            const secsEl = document.getElementById("seconds");
+
+            if (daysEl) daysEl.innerText = String(days).padStart(2, '0');
+            if (hoursEl) hoursEl.innerText = String(hours).padStart(2, '0');
+            if (minsEl) minsEl.innerText = String(minutes).padStart(2, '0');
+            if (secsEl) secsEl.innerText = String(secs).padStart(2, '0');
         }
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
         const canvas = document.getElementById('scratchCanvas');
-        const ctx = canvas.getContext('2d');
-        
-        function initScratchCard() {
-            ctx.fillStyle = '#787C5C';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#C5B358';
-            ctx.font = 'bold 16px Cinzel, sans-serif';
-            ctx.textAlign = 'center';
-            ctx.fillText('✨ Scratch Here to Reveal ✨', canvas.width / 2, canvas.height / 2);
-        }
-        initScratchCard();
+        if (canvas) {
+            const ctx = canvas.getContext('2d');
+            
+            function initScratchCard() {
+                ctx.fillStyle = '#787C5C';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#C5B358';
+                ctx.font = 'bold 16px Cinzel, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('✨ Scratch Here to Reveal ✨', canvas.width / 2, canvas.height / 2);
+            }
+            initScratchCard();
 
-        let isDrawing = false;
-        function getPos(e) {
-            const rect = canvas.getBoundingClientRect();
-            return {
-                x: (e.clientX || e.touches[0].clientX) - rect.left,
-                y: (e.clientY || e.touches[0].clientY) - rect.top
+            let isDrawing = false;
+            function getPos(e) {
+                const rect = canvas.getBoundingClientRect();
+                return {
+                    x: (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left,
+                    y: (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top
+                };
+            }
+
+            function scratch(e) {
+                if (!isDrawing) return;
+                e.preventDefault();
+                const pos = getPos(e);
+                ctx.globalCompositeOperation = 'destination-out';
+                ctx.beginPath();
+                ctx.arc(pos.x, pos.y, 25, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            canvas.addEventListener('mousedown', (e) => { isDrawing = true; scratch(e); });
+            canvas.addEventListener('mousemove', scratch);
+            window.addEventListener('mouseup', () => isDrawing = false);
+
+            canvas.addEventListener('touchstart', (e) => { isDrawing = true; scratch(e); }, {passive: false});
+            canvas.addEventListener('touchmove', scratch, {passive: false});
+            window.addEventListener('touchend', () => isDrawing = false);
+
+            window.revealInstantly = function() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
             };
-        }
-
-        function scratch(e) {
-            if (!isDrawing) return;
-            e.preventDefault();
-            const pos = getPos(e);
-            ctx.globalCompositeOperation = 'destination-out';
-            ctx.beginPath();
-            ctx.arc(pos.x, pos.y, 25, 0, Math.PI * 2);
-            ctx.fill();
-        }
-
-        canvas.addEventListener('mousedown', (e) => { isDrawing = true; scratch(e); });
-        canvas.addEventListener('mousemove', scratch);
-        window.addEventListener('mouseup', () => isDrawing = false);
-
-        canvas.addEventListener('touchstart', (e) => { isDrawing = true; scratch(e); });
-        canvas.addEventListener('touchmove', scratch);
-        window.addEventListener('touchend', () => isDrawing = false);
-
-        function revealInstantly() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
         }
     </script>
 </body>
