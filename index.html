@@ -6,8 +6,8 @@
     <title>Meghashree & Darshan V - Wedding Invitation</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts (Including Pinyon Script for ultra-elegant names) -->
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Pinyon+Script&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Google Fonts: Playfair Display, Alex Brush, Cinzel, Montserrat -->
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -24,8 +24,9 @@
                     },
                     fontFamily: {
                         cinzel: ['Cinzel', 'serif'],
-                        script: ['Great Vibes', 'cursive'],
-                        pinyon: ['Pinyon Script', 'cursive'],
+                        script: ['Alex Brush', 'cursive'],
+                        serifDisplay: ['Playfair Display', 'serif'],
+                        sans: ['Montserrat', 'sans-serif']
                     }
                 }
             }
@@ -39,9 +40,10 @@
             overflow-x: hidden;
             margin: 0;
             padding: 0;
+            width: 100vw;
         }
 
-        /* Realistic Olive Textured Background with Gold Floral Motifs matching reference */
+        /* Realistic Olive Textured Background with Gold Floral Motifs */
         .olive-card-bg {
             background-color: #787c5c;
             background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239c9f84' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
@@ -69,6 +71,7 @@
             visibility: hidden;
             opacity: 0;
             transition: opacity 1.5s ease-in, visibility 0s linear 1.5s;
+            width: 100%;
         }
         body.invitation-active #mainInvitation {
             visibility: visible;
@@ -137,7 +140,7 @@
         </button>
     </div>
 
-    <!-- OPENING SCREEN WITH 3D OLIVE DOORS & REFERENCE PLQUE -->
+    <!-- OPENING SCREEN WITH 3D OLIVE DOORS & PLAQUE -->
     <div id="openingScreen" class="fixed inset-0 z-40 flex items-center justify-center bg-royalDark overflow-hidden">
         
         <!-- Left Door Flap -->
@@ -146,43 +149,45 @@
         <!-- Right Door Flap -->
         <div id="doorRight" class="door-right absolute top-0 right-0 w-1/2 h-full olive-card-bg z-20 flex flex-col items-start justify-center shadow-2xl"></div>
 
-        <!-- Center Cream Ornamental Plaque ("TAP TO OPEN" bridging the split) -->
+        <!-- Center Cream Ornamental Plaque -->
         <div id="sealContainer" class="z-30 flex flex-col items-center justify-center cursor-pointer group transition-all duration-500" onclick="handleFirstInteraction()">
-            <div class="relative px-12 py-10 bg-royalCream rounded-3xl shadow-2xl border-4 border-[#B8A64E] group-hover:scale-105 transition duration-500 text-center max-w-[260px]">
+            <div class="relative px-12 py-10 bg-royalCream rounded-3xl shadow-2xl border-4 border-[#B8A64E] group-hover:scale-105 transition duration-500 text-center max-w-[280px]">
                 <div class="absolute inset-3 border-2 border-[#B8A64E]/50 rounded-2xl pointer-events-none"></div>
                 <div class="text-[#B8A64E] mb-3">
                      <i class="fa-solid fa-om text-xl opacity-80"></i>
                 </div>
                 <h2 class="font-cinzel font-bold text-[#5C6047] text-sm tracking-[.25em] uppercase">TAP TO OPEN</h2>
-                <div class="mt-3 text-[#787C5C] text-[11px] font-script tracking-wider font-bold">MEGHASHREE & DARSHAN</div>
+                <!-- Updated with Alex Brush cursive font -->
+                <div class="mt-3 text-[#787C5C] text-2xl font-script tracking-wide">Meghashree & Darshan</div>
             </div>
              <p class="font-cinzel text-royalCream text-xs tracking-widest mt-5 bg-royalDark/90 px-5 py-2 rounded-full border border-royalGold/30 animate-bounce shadow-lg">Touch seal to enter</p>
         </div>
-    </div>    <!-- MAIN INVITATION CONTAINER -->
-    <div id="mainInvitation" class="max-w-md mx-auto bg-royalCream text-gray-800 shadow-2xl relative min-h-screen z-20">
+    </div>
+        <!-- MAIN INVITATION CONTAINER (Full-Width Expansion) -->
+    <div id="mainInvitation" class="w-full bg-royalCream text-gray-800 shadow-2xl relative min-h-screen z-20">
         
-        <div class="bg-royalOlive text-white text-center py-10 px-6 relative overflow-hidden border-b-4 border-[#B8A64E]">
-            <p class="font-cinzel tracking-widest text-xs uppercase text-[#F3E5AB] mb-2 z-10 relative">Sri Ganesha Namaha</p>
-            <h1 class="font-script text-7xl text-[#F3E5AB] mb-2 z-10 relative" style="line-height: 0.9;">Meghashree</h1>
+        <div class="bg-royalOlive text-white text-center py-12 px-6 relative overflow-hidden border-b-4 border-[#B8A64E]">
+            <p class="font-cinzel tracking-widest text-xs uppercase text-[#F3E5AB] mb-3 z-10 relative">Sri Ganesha Namaha</p>
+            <h1 class="font-script text-6xl md:text-8xl text-[#F3E5AB] mb-2 z-10 relative" style="line-height: 0.9;">Meghashree</h1>
             <div class="font-cinzel text-2xl text-[#F3E5AB] my-3 z-10 relative">&</div>
-            <h1 class="font-script text-7xl text-[#F3E5AB] mb-5 z-10 relative" style="line-height: 0.9;">Darshan V</h1>
-            <p class="font-sans text-sm tracking-wider text-[#F3E5AB]/90 italic max-w-sm mx-auto z-10 relative">"Two hearts, one beautiful journey, and a lifetime of togetherness."</p>
+            <h1 class="font-script text-6xl md:text-8xl text-[#F3E5AB] mb-6 z-10 relative" style="line-height: 0.9;">Darshan V</h1>
+            <p class="font-serifDisplay italic text-base tracking-wider text-[#F3E5AB]/90 max-w-lg mx-auto z-10 relative">"Two hearts, one beautiful journey, and a lifetime of togetherness."</p>
         </div>
 
-        <div class="p-10 text-center bg-royalCream border-b border-[#B8A64E]/20">
+        <div class="py-12 px-6 text-center bg-royalCream border-b border-[#B8A64E]/20 max-w-2xl mx-auto">
             <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-royalOlive/10 flex items-center justify-center text-royalOlive border-2 border-dashed border-royalOlive/20">
                 <i class="fa-solid fa-hands-praying text-3xl"></i>
             </div>
-            <p class="font-sans text-sm leading-relaxed text-gray-800 mb-8 max-w-sm mx-auto">
+            <p class="font-sans text-base leading-relaxed text-gray-800 mb-8">
                 With the divine grace of Lord Ganesha and the blessings of our beloved families, we joyfully invite you to celebrate the union of our lives. Your presence will add immense joy to our auspicious day.
             </p>
-            <div class="font-script text-4xl text-royalOlive tracking-wide">Our Forever Begins</div>
+            <div class="font-script text-5xl text-royalOlive tracking-wide">Our Forever Begins</div>
         </div>
 
         <!-- SCRATCH-TO-REVEAL -->
-        <div class="p-10 bg-gradient-to-b from-royalCream to-[#EEEED0] text-center border-b border-[#B8A64E]/20">
+        <div class="py-12 px-6 bg-gradient-to-b from-royalCream to-[#EEEED0] text-center border-b border-[#B8A64E]/20">
             <h3 class="font-cinzel font-bold text-royalOlive text-xl uppercase tracking-wider mb-3">Save the Date</h3>
-            <p class="text-sm text-gray-700 mb-8 max-w-xs mx-auto">Gently swipe or click the heart below to reveal our special dates.</p>
+            <p class="text-sm text-gray-700 mb-8 max-w-xs mx-auto">Gently swipe or click the box below to reveal our special dates.</p>
             
             <div class="relative w-80 h-52 mx-auto rounded-2xl overflow-hidden shadow-lg bg-royalOlive flex items-center justify-center">
                 <div class="absolute inset-0 flex flex-col items-center justify-center p-5 bg-royalCream text-royalOlive z-0">
@@ -198,32 +203,32 @@
         </div>
 
         <!-- COUNTDOWN TIMER -->
-        <div class="p-10 bg-royalOlive text-white text-center relative">
+        <div class="py-12 px-6 bg-royalOlive text-white text-center relative">
             <h3 class="font-cinzel font-bold text-[#F3E5AB] text-xl uppercase tracking-wider mb-4 z-10 relative">Counting Down To Forever</h3>
             <p class="text-sm text-[#F3E5AB]/80 mb-10 z-10 relative max-w-xs mx-auto">Until we begin our new chapter together (Reception)</p>
             
-            <div id="countdownTimer" class="grid grid-cols-4 gap-3 max-w-sm mx-auto z-10 relative mb-4">
+            <div id="countdownTimer" class="grid grid-cols-4 gap-3 max-w-md mx-auto z-10 relative mb-4">
                 <div class="bg-royalOliveLight p-4 rounded-xl shadow-inner">
-                    <span id="days" class="font-cinzel text-4xl font-bold text-[#F3E5AB] block">00</span>
+                    <span id="days" class="font-cinzel text-3xl md:text-4xl font-bold text-[#F3E5AB] block">00</span>
                     <span class="text-xs uppercase tracking-widest text-[#F3E5AB] mt-1 block">Days</span>
                 </div>
                 <div class="bg-royalOliveLight p-4 rounded-xl shadow-inner">
-                    <span id="hours" class="font-cinzel text-4xl font-bold text-[#F3E5AB] block">00</span>
+                    <span id="hours" class="font-cinzel text-3xl md:text-4xl font-bold text-[#F3E5AB] block">00</span>
                     <span class="text-xs uppercase tracking-widest text-[#F3E5AB] mt-1 block">Hours</span>
                 </div>
                 <div class="bg-royalOliveLight p-4 rounded-xl shadow-inner">
-                    <span id="minutes" class="font-cinzel text-4xl font-bold text-[#F3E5AB] block">00</span>
+                    <span id="minutes" class="font-cinzel text-3xl md:text-4xl font-bold text-[#F3E5AB] block">00</span>
                     <span class="text-xs uppercase tracking-widest text-[#F3E5AB] mt-1 block">Mins</span>
                 </div>
                 <div class="bg-royalOliveLight p-4 rounded-xl shadow-inner">
-                    <span id="seconds" class="font-cinzel text-4xl font-bold text-[#F3E5AB] block">00</span>
+                    <span id="seconds" class="font-cinzel text-3xl md:text-4xl font-bold text-[#F3E5AB] block">00</span>
                     <span class="text-xs uppercase tracking-widest text-[#F3E5AB] mt-1 block">Secs</span>
                 </div>
             </div>
         </div>
 
         <!-- EVENTS & VENUE -->
-        <div class="p-10 bg-royalCream space-y-8">
+        <div class="py-12 px-6 bg-royalCream space-y-8 max-w-xl mx-auto">
             <h3 class="font-cinzel font-bold text-royalOlive text-center text-2xl uppercase tracking-wider mb-4">Wedding Events</h3>
             
             <div class="bg-white p-8 rounded-2xl shadow-lg text-center relative border border-[#B8A64E]/30">
@@ -250,9 +255,9 @@
             </div>
         </div>
 
-        <div class="bg-royalOlive text-[#F3E5AB] p-10 text-center border-t-4 border-[#B8A64E]">
+        <div class="bg-royalOlive text-[#F3E5AB] py-12 px-6 text-center border-t-4 border-[#B8A64E]">
             <p class="font-cinzel text-sm uppercase tracking-widest mb-4">We Await Your Gracious Presence</p>
-            <h3 class="font-script text-5xl mb-10 leading-tight">With Love, Meghashree & Darshan V</h3>
+            <h3 class="font-script text-6xl mb-6 leading-tight">With Love, Meghashree & Darshan V</h3>
         </div>
 
     </div>
